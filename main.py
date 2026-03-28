@@ -6,15 +6,11 @@ import sys
 import matplotlib.pyplot as plt
 import calculate_bpm
 import os
-from pathlib import Path
 
-if __name__ == '__main__':
+def fine_green_channel(video_path):
     model = YOLO("best.pt")
 
-    # Find a way to get the video path once video file is posted
-    video_path = Path(None)
-
-    cap = cv.VideoCapture(0)
+    cap = cv.VideoCapture(video_path)
     name = "Webcam"
 
     locked_det_id = None
@@ -175,3 +171,5 @@ if __name__ == '__main__':
 
     if video_path.exists():
         os.remove(video_path)
+
+    return bpm    
