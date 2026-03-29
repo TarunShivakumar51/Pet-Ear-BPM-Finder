@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import calculate_bpm
 import os
 
-def fine_green_channel(video_path):
+def find_green_channel(video_path):
     model = YOLO("best.pt")
 
     cap = cv.VideoCapture(video_path)
@@ -168,8 +168,5 @@ def fine_green_channel(video_path):
     cv.destroyAllWindows()
 
     bpm = calculate_bpm(green_channel_mean, cap.get(cv.CAP_PROP_FPS))
-
-    if video_path.exists():
-        os.remove(video_path)
 
     return bpm    

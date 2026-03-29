@@ -27,9 +27,3 @@ def bpm_calculation(green_channel, fps):
     bpm = green_channel_hz * 60
 
     return bpm
-
-
-    
-
-
-
