@@ -1,13 +1,20 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, Request, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import green_channel
-import pathlib as Path
+from pathlib import Path
 import os
 
-app = FastAPI() 
+app = FastAPI()
 
-@app.post("/uploadfile/")
-async def file_upload(file: UploadFile):
+app.add_middleware(CORSMiddleware,
+                   allow_origins = ["*"],
+                   allow_methods = ["*"],
+                   allow_headers = ["*"]
+                )
+
+@app.post("/uploadfile")
+async def file_upload(file: UploadFile, request: Request):
     with open(f"./{file.filename}", "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
@@ -15,6 +22,10 @@ async def file_upload(file: UploadFile):
 
     try:
         bpm = green_channel.find_green_channel(video_path)
+
+        if request.is_disconnected():
+            return {"Disconnected" : "Client has been disconneted"}
+        
         return {"Calculated BPM" : bpm}
     finally:
         if video_path.exists():
